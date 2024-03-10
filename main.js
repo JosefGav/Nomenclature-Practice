@@ -82,32 +82,30 @@ function getRandomIntInclusive(min, max) {
 }
 
 const polyatomicIons = [
-    {root:"nitr",os:3,charge:1,symbol:"N","varying-oxidation":true},
-    {root:"chlor",os:3,charge:1,symbol:"Cl","varying-oxidation":true},
-    {root:"carbon",os:3,charge:2,symbol:"C","varying-oxidation":true},
+    {root:"nitr",os:3,charge:1,symbol:"N","varying-oxidation":true,per:false,ate:true,ite:true,hypo:false},
+    {root:"chlor",os:3,charge:1,symbol:"Cl","varying-oxidation":true,per:true,ate:true,ite:true,hypo:true},
+    {root:"carbon",os:3,charge:2,symbol:"C","varying-oxidation":true,per:false,ate:true,ite:true,hypo:false},
     {root:"silic",os:3,charge:2,symbol:"Si","varying-oxidation":false},
-    {root:"sulf",os:4,charge:2,symbol:"S","varying-oxidation":true},
+    {root:"sulf",os:4,charge:2,symbol:"S","varying-oxidation":true,per:false,ate:true,ite:true,hypo:false},
     {root:"chrom",os:4,charge:2,symbol:"Cr","varying-oxidation":false},
     {root:"arsen",os:4,charge:3,symbol:"As","varying-oxidation":false},
-    {root:"phosph",os:4,charge:3,symbol:"P","varying-oxidation":true},
+    {root:"phosph",os:4,charge:3,symbol:"P","varying-oxidation":true,per:false,ate:true,ite:true,hypo:true},
     {name:"thiosulfate",charge:2,formula:"S2O3"},
     {name:"dichromate",charge:2,formula:"Cr2O7"},
     {name:"permanganate",charge:1,formula:"MnO4"},
     {name:"cyanide",charge:1,formula:"CN"},
     {name:"hydroxide",charge:1,formula:"OH"},
-    {name:"acetate",charge:1,formula:"CH3COO"},
-    {name:"peroxide",charge:2,formula:"O2"}
-
-
+    {name:"acetate",charge:1,formula:"CH3COO"}//,
+    // {name:"peroxide",charge:2,formula:"O2"}
 ]
-//    {name:"ammonium",charge:1,formula:"S2O3"},
 
 
 const generateIonicCompound = () => {
     // return [name, formula]
+    
     let name = ""
     let formula  = ""
-
+    
     const metal = generateMetal()
 
     name += metal[0] + " "
@@ -135,7 +133,7 @@ const generateIonicCompound = () => {
 }   
 
 const generateMetal = () => {
-    const index = getRandomIntInclusive(1,transitionMetals.length-1)
+    const index = getRandomIntInclusive(0,transitionMetals.length-1)
 
     if (transitionMetals[index].hasOwnProperty("traditional")) {
         const rand = getRandomIntInclusive(1,2)
@@ -163,7 +161,7 @@ const generateMetal = () => {
 }
 
 function generatePolyIon () {
-    const index = getRandomIntInclusive(1,polyatomicIons.length-1)
+    const index = getRandomIntInclusive(0,polyatomicIons.length-1)
 
     if (!polyatomicIons[index].hasOwnProperty("varying-oxidation")) {
         return [polyatomicIons[index].name,polyatomicIons[index].charge,polyatomicIons[index].formula ]
@@ -171,40 +169,33 @@ function generatePolyIon () {
 
     if (polyatomicIons[index]["varying-oxidation"]==false) {
         return [polyatomicIons[index].root +"ate", polyatomicIons[index].charge, polyatomicIons[index].symbol+"O"+polyatomicIons[index].os.toString()]
-    } else if (polyatomicIons[index].os == 4) {
+    } else  {
 
-        const oxidization = getRandomIntInclusive(-2,1)
         let suffix = ""
         let prefix = ""
-        if (oxidization==1) {
-            prefix = "per"
-            suffix = "ate"
-        } else if (oxidization==0) {
-            prefix = ""
-            suffix = "ate"
-        } else if (oxidization==-1) {
-            prefix = ""
-            suffix = "ite"
-        } else if (oxidization==-2) {
-            prefix = "hypo"
-            suffix = "ite"
-        } 
+        let oxidization
+
+        do {
+            oxidization = getRandomIntInclusive(-2,1)
+            
+            if (oxidization==1 && polyatomicIons[index].per == true) {
+                prefix = "per"
+                suffix = "ate"
+            } else if (oxidization==0 && polyatomicIons[index].ate == true) {
+                prefix = ""
+                suffix = "ate"
+            } else if (oxidization==-1 && polyatomicIons[index].ite == true) {
+                prefix = ""
+                suffix = "ite"
+            } else if (oxidization==-2 && polyatomicIons[index].hypo == true) {
+                prefix = "hypo"
+                suffix = "ite"
+            }
+        } while (!suffix && !prefix);
 
         return [prefix + polyatomicIons[index].root +suffix, polyatomicIons[index].charge, polyatomicIons[index].symbol+"O"+(polyatomicIons[index].os+oxidization).toString()]
  
-    } else {
-        const oxidization = getRandomIntInclusive(-1,0)
-        let suffix = ""
-
-        if (oxidization==-1) {
-            suffix = "ite"
-        } else if (oxidization==0) {
-            suffix = "ate"
-        } 
-
-        return [polyatomicIons[index].root +suffix, polyatomicIons[index].charge, polyatomicIons[index].symbol+"O"+(polyatomicIons[index].os+oxidization).toString()]
-
-    }
+    } 
 }
 
 
