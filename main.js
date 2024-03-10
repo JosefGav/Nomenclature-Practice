@@ -1,6 +1,11 @@
 const front  = document.getElementById("front")
 const back  = document.getElementById("back")
 
+window.MathJax = {
+    loader: {load: ['[tex]/mhchem']},
+    tex: {packages: {'[+]': ['mhchem']}}
+  };
+
 var GCD = function(a, b) {
     if (!b) { // if b is zero
       return a;
@@ -72,7 +77,7 @@ const transitionMetals = [
 function regenerate() {
     const compound = generateIonicCompound()
     front.innerHTML = compound[0]
-    back.innerHTML = compound[1]
+    back.innerHTML = "$$\\ce{"+compound[1]+"}$$"
 }
 
 function getRandomIntInclusive(min, max) {
@@ -201,3 +206,8 @@ function generatePolyIon () {
 
 
 
+document.getElementById("regenerate").addEventListener("click", function() {
+    regenerate()
+
+    MathJax.typesetPromise()
+})
