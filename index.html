@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1" url>
+<link rel="stylesheet" href="style.css"></link>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div id="mainContainer">
+    <div class="info">
+      <h1>Hover Over To Get The Answer</h1>
+      <button  onclick="regenerate()" id="regenerate">New Question</button>
+    </div>
+    
+    <div class="flip-card">
+      <div class="flip-card-inner" >
+        <div class="flip-card-front  d-flex align-items-center justify-content-center" id = "front">
+        </div>
+        <div class="flip-card-back  d-flex align-items-center justify-content-center" id = "back">
+          
+        </div>
+      </div>
+    </div>
+    
+
+  </div>
+
+  <script src="main.js"></script>
+
+</body>
+</html>
